@@ -21,7 +21,8 @@ The mapped volumes (/letsencrypt.sh/accounts, /letsencrypt.sh/certs, /letsencryp
 
     docker pull tnwhitwell/letsencrypt.sh-cloudflare
 
-## CREDITS
+
+## Credits
 
 Dig for Alpine:
 https://github.com/sequenceiq/docker-alpine-dig/
