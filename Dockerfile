@@ -5,13 +5,11 @@ RUN git clone https://github.com/lukas2511/letsencrypt.sh /letsencrypt.sh
 
 RUN apk add openssl curl bash jq
 
-RUN curl -L https://github.com/sequenceiq/docker-alpine-dig/releases/download/v9.10.2/dig.tgz|tar -xzv -C /usr/local/bin/
+ADD parts/hook.sh /letsencrypt.sh/hooks/cloudflare/hook.sh
 
-ADD hook.sh /letsencrypt.sh/hooks/cloudflare/hook.sh
-RUN chmod +x /letsencrypt.sh/hooks/cloudflare/hook.sh
+ADD parts/go.sh /letsencrypt.sh/run.sh
 
-ADD go.sh /letsencrypt.sh/run.sh
-RUN chmod +x /letsencrypt.sh/run.sh
+ADD parts/dig /usr/local/bin/dig
 
 RUN rm -rf /var/cache/apk/*
 
