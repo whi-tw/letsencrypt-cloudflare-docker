@@ -15,13 +15,9 @@ function _cf_get {
   curl -s -X GET "https://api.cloudflare.com/client/v4/$URL" -H "X-Auth-Email: $CF_EMAIL" -H "X-Auth-Key: $CF_KEY" -H "Content-Type: application/json"
 }
 
-function _has_dns_propagated {
-  local NAME="${1}" TOKEN="${2}"
-  dig_res=$(dig +short TXT $NAME @8.8.8.8)
-  if [ "$dig_res" == "\"$TOKEN\"" ]
-  then
-    echo "True"
-  fi
+function _check_DNS {
+  local NAME="${1}"
+  dig +short TXT $NAME @8.8.8.8 | sed 's/"//g'
 }
 
 # https://api.cloudflare.com/#zone-list-zones
@@ -50,24 +46,23 @@ function _get_txt_record_id {
 
 # https://api.cloudflare.com/#dns-records-for-a-zone-create-dns-record
 function deploy_challenge {
-  local DOMAIN="${1}" TOKEN="${3}"
+  local DOMAIN="${1}" TOKEN_FILENAME="${2}" TOKEN_VALUE="${3}"
+  _debug "Creating Challenge: $1: $3"
   ZONE_ID=$(_get_zone_id $DOMAIN)
   _debug "Got Zone ID $ZONE_ID"
-  NAME="_acme_challenge.$DOMAIN"
+  NAME="_acme-challenge.$DOMAIN"
 
-  result=$(curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records" -H "X-Auth-Email: $CF_EMAIL" -H "X-Auth-Key: $CF_KEY" -H "Content-Type: application/json" --data "{\"type\":\"TXT\",\"name\":\"$NAME\",\"content\":\"$TOKEN\",\"ttl\":1}")
+  result=$(curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records" -H "X-Auth-Email: $CF_EMAIL" -H "X-Auth-Key: $CF_KEY" -H "Content-Type: application/json" --data "{\"type\":\"TXT\",\"name\":\"$NAME\",\"content\":\"$TOKEN_VALUE\",\"ttl\":1}")
   RECORD_ID=$(echo $result | jq -r '.result.id')
   _debug "TXT record created, ID: $RECORD_ID"
 
   _info "Settling down for 10s..."
   sleep 10
 
-  res="$(_has_dns_propagated $NAME $TOKEN)"
-  while [ -z "$res" ]
+  while [ "$(_check_DNS $NAME)" != "$TOKEN_VALUE" ]
   do
     _info "DNS not propagated, waiting 30s..."
     sleep 30
-    res=$(_has_dns_propagated $NAME $TOKEN)
   done
 
 }
@@ -84,7 +79,7 @@ function clean_challenge {
 
   ZONE_ID=$(_get_zone_id $DOMAIN)
   _debug "Got Zone ID $ZONE_ID"
-  NAME="_acme_challenge.$DOMAIN"
+  NAME="_acme-challenge.$DOMAIN"
   RECORD_ID=$(_get_txt_record_id $ZONE_ID $NAME $TOKEN)
   _debug "Deleting TXT record, ID: $RECORD_ID"
 
@@ -98,9 +93,7 @@ function deploy_cert {
 }
 
 function unchanged_cert {
-  _debug "Cert was unchanged"
-  _debug "ssl_certificate: $CERTFILE"
-  _debug "ssl_certificate_key: $KEYFILE"
+  return
 }
 
 # check environmental vars
