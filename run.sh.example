@@ -5,4 +5,4 @@ docker run --rm -it \
     -v letsencrypt.sh/accounts:/letsencrypt.sh/accounts \
     -v letsencrypt.sh/certs:/letsencrypt.sh/certs \
     -v letsencrypt.sh/domains.txt:/letsencrypt.sh/domains.txt:ro \
-    letsencrypt.sh
+    tnwhitwell/letsencrypt.sh-cloudflare
