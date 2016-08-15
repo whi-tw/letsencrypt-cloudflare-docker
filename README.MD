@@ -19,7 +19,21 @@ The mapped volumes (/letsencrypt.sh/accounts, /letsencrypt.sh/certs, /letsencryp
 
 ## Installation
 
-    docker pull tnwhitwell/letsencrypt.sh-cloudflare
+    git pull https://github.com/tnwhitwell/letsencrypt-cloudflare-docker
+    cd letsencrypt-cloudflare-docker
+    cp run.sh.example run.sh
+    
+    open run.sh in an editor
+    edit "<CLOUDFLARE_EMAIL>" and "<CLOUDFLARE_KEY>" to match your cloudflare account
+    
+    cp domains.txt.example domains.txt
+    open domains.txt in an editor
+    enter domains, one line per certificate, with SAN names as per:
+
+    example.com alternate.com subdomain.example.com
+
+    ./run.sh
+    
 
 
 ## Credits
