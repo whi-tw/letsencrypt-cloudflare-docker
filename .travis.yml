@@ -7,5 +7,5 @@ before_install:
   - sed "s/<CLOUDFLARE_EMAIL>/${CF_EMAIL}/;s/<CLOUDFLARE_KEY>/${CF_KEY}/" run.sh.example > run.sh
   - echo "${DUMMY_DOMAIN}" > domains.txt
   - ./register.sh
-  - ./run.sh
+  - chmod +x run.sh && ./run.sh
 
