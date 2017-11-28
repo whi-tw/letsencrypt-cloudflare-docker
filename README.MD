@@ -7,19 +7,19 @@ A docker container which handles letsencrypt certificate creation and renewal. A
 Should be run with:
 
     docker run --rm -it \
-    --name="letsencrypt.sh" \
+    --name="letsencrypt" \
     -e CF_EMAIL='<CLOUDFLARE_EMAIL>' \
     -e CF_KEY='<CLOUDFLARE_KEY>' \
-    -v letsencrypt.sh/accounts:/letsencrypt.sh/accounts \
-    -v letsencrypt.sh/certs:/letsencrypt.sh/certs \
-    -v letsencrypt.sh/domains.txt:/letsencrypt.sh/domains.txt:ro \
+    -v letsencrypt/accounts:/letsencrypt/accounts \
+    -v letsencrypt/certs:/letsencrypt/certs \
+    -v letsencrypt/domains.txt:/letsencrypt/domains.txt:ro \
     tnwhitwell/letsencrypt.sh-cloudflare
 
-The mapped volumes (/letsencrypt.sh/accounts, /letsencrypt.sh/certs, /letsencrypt.sh/domains.txt) should be mapped somewhere static. The certificates will be created in the /certs folder.
+The mapped volumes (/letsencrypt/accounts, /letsencrypt/certs, /letsencrypt/domains.txt) should be mapped somewhere static. The certificates will be created in the /certs folder.
 
 ## Installation
 
-    git pull https://github.com/tnwhitwell/letsencrypt-cloudflare-docker
+    git clone https://github.com/tnwhitwell/letsencrypt-cloudflare-docker
     cd letsencrypt-cloudflare-docker
     cp run.sh.example run.sh
     
