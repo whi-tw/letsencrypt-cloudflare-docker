@@ -7,8 +7,6 @@ RUN apk del git pcre expat
 
 RUN apk add openssl curl bash jq
 
-RUN /letsencrypt/dehydrated --register --accept-terms
-
 ADD parts/hook.sh /letsencrypt/hooks/cloudflare/hook.sh
 
 ADD parts/go.sh /letsencrypt/run.sh
