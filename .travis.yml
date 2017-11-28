@@ -1,0 +1,11 @@
+sudo: required
+language: ruby
+services:
+  - docker
+before_install:
+  - docker build -t tnwhitwell/letsencrypt.sh-cloudflare .
+  - sed "s/<CLOUDFLARE_EMAIL>/${CF_EMAIL}/;s/<CLOUDFLARE_KEY>/${CF_KEY}/" run.sh.example > run.sh
+  - echo "${DUMMY_DOMAIN}" > domains.txt
+  - ./register.sh
+  - ./run.sh
+
