@@ -114,7 +114,7 @@ function exit_hook {
 
 # check environmental vars
 [ -z "$CF_EMAIL" ] && echo "Need to set CF_EMAIL" && exit 1
-[ -z "$CF_KEY" ] && echo "Need to set CF_EMAIL" && exit 1
+[ -z "$CF_KEY" ] && echo "Need to set CF_KEY" && exit 1
 
 HANDLER="$1"; shift
 if [[ "${HANDLER}" =~ ^(deploy_challenge|clean_challenge|deploy_cert|unchanged_cert|invalid_challenge|request_failure|startup_hook|exit_hook)$ ]]; then
