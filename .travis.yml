@@ -15,5 +15,6 @@ notifications:
     secure: vs/fqPzg8fgj8GRLHwzSKwhYnRSuz6zNVuq+eLYoMXf2YI9ASF4vOZM7wxsnaw1uzqXgxIEwvEBK3zWsXfcxX3P/J8d5HZzOjQaSZB0W24csT1JK6V8SZbagU97a6CkduRrJiYCahNdMn9DIuEkYXhnYPYcbPv5oGyZIXADa0FO9P2RgTPNjCRnNJNkCFE02e4KD5oF52hFtT8H1ELZ9mQWyRqU+vus7ZWn5VGAS3uckMwuBklOdNJ15yzTMA5qC6ifxxWpZXp7rGFHDseqeYUiW/DRbLIF1OdgQ0EuifxIzL7IbZ71dK4fa+pGMPFoVjqYIdS3xNdhcWXE5NZvnfrkQKKUcW6PVxYzBD8eKVOFRLZ7Npil6umABrt6p5Nmb67gQ0M+ToCQllv02/GDupVfC7QF1uFfE/0upZgXmTEGqJFsyGAXKbAnxKmWxdSdvJsZF1D7FGGejMCKawDiIfNt5e9k8Mp9HjhxEghRbdsfrer7t6h9zHMatWTK2bzeCGc+oTu8jT4touWpthj2Aqqzw2LIi40kspE/MTkvoP+kbQzOAoAn2V8nHsQiHDDj0yATbCu9cHO35/Zz+bTelFRanvUOqvptVVIwgSgRvxt+8zl/7d0IQnYgAXwMBUBSWwLKw6KksijL4VNwQszemuP6xyy7N8dPLDgmPRb0B6AY=
 deploy:
   provider: script
-  script:
-    - curl -H "Content-Type: application/json" --data '{"build": true}' -X POST https://registry.hub.docker.com/u/tnwhitwell/letsencrypt.sh-cloudflare/trigger/${DOCKERHUB_TRIGGER_TOKEN}/
+  script: dh-build.sh
+  on:
+    branch: master
